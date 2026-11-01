@@ -1,0 +1,17 @@
+[build]
+  command = "mkdir -p dist/web && cp web/index.html dist/index.html && cp web/app.css web/app.js dist/web/"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/healthz"
+  to = "/.netlify/functions/api/healthz"
+  status = 200
+
+[functions."auction-refresh"]
+  schedule = "30 4 * * *"

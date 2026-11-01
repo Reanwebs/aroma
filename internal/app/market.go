@@ -100,6 +100,17 @@ func saveAuctionPriceSnapshot(ctx context.Context, db *gorm.DB, feed AuctionPric
 	})
 }
 
+// RefreshAuctionPrices fetches the latest small-cardamom auction feed and saves
+// its daily snapshot. It is used by both the long-running server scheduler and
+// Netlify's scheduled function.
+func RefreshAuctionPrices(ctx context.Context, db *gorm.DB) error {
+	feed, err := fetchSmallCardamomPrices(ctx)
+	if err != nil {
+		return err
+	}
+	return saveAuctionPriceSnapshot(ctx, db, feed)
+}
+
 func latestSavedAuctionPrices(ctx context.Context, db *gorm.DB) (AuctionPriceFeed, error) {
 	loc, err := time.LoadLocation("Asia/Kolkata")
 	if err != nil {
