@@ -286,11 +286,13 @@ func (a *API) CustomerPhoto(c *gin.Context) {
 }
 func (a *API) CreateJob(c *gin.Context) {
 	var x struct {
-		CustomerID  uuid.UUID       `json:"customer_id"`
-		ProductType string          `json:"product_type"`
-		Notes       string          `json:"notes"`
-		WeightKG    decimal.Decimal `json:"weight_kg"`
-		PricePerKG  decimal.Decimal `json:"price_per_kg"`
+		CustomerID      uuid.UUID       `json:"customer_id"`
+		ProductType     string          `json:"product_type"`
+		Notes           string          `json:"notes"`
+		WeightKG        decimal.Decimal `json:"weight_kg"`
+		PricePerKG      decimal.Decimal `json:"price_per_kg"`
+		SendWhatsApp    bool            `json:"send_whatsapp"`
+		WhatsAppMessage string          `json:"whatsapp_message"`
 	}
 	if c.ShouldBindJSON(&x) != nil {
 		fail(c, errors.New("invalid request"))
@@ -302,7 +304,18 @@ func (a *API) CreateJob(c *gin.Context) {
 		fail(c, e)
 		return
 	}
-	ok(c, 201, v, "job created successfully")
+	result := gin.H{"job": v, "whatsapp_sent": false}
+	if x.SendWhatsApp {
+		customer, customerErr := a.svc.Customer(c, v.CustomerID)
+		if customerErr != nil {
+			result["whatsapp_error"] = "Could not load the customer's phone number."
+		} else if sendErr := a.sendWhatsApp(c.Request.Context(), customer.Phone, x.WhatsAppMessage); sendErr != nil {
+			result["whatsapp_error"] = sendErr.Error()
+		} else {
+			result["whatsapp_sent"] = true
+		}
+	}
+	ok(c, 201, result, "job created successfully")
 }
 func (a *API) ListJobs(c *gin.Context) {
 	p, l := page(c)

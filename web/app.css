@@ -55,3 +55,13 @@
   #invoicesView td:nth-child(6)::before{content:'Actions';width:100%;margin:0}
   #invoicesView td:nth-child(6) .action{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#f7f9f6;text-decoration:none;white-space:nowrap;font-size:11px}
 }
+#jobForm label.whatsapp-opt-in{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;margin:16px 0;padding:12px 15px;border:1px solid #d7e3d9;border-radius:12px;background:#f7faf7;cursor:pointer}
+#jobForm .whatsapp-opt-in input[type=checkbox]{appearance:none;-webkit-appearance:none;display:grid;place-content:center;flex:0 0 22px;width:22px;height:22px;min-width:22px;margin:0;padding:0;border:1.5px solid #9aaba0;border-radius:6px;background:#fff;box-shadow:none;cursor:pointer}
+#jobForm .whatsapp-opt-in input[type=checkbox]::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .12s}
+#jobForm .whatsapp-opt-in input[type=checkbox]:checked{border-color:#1d704b;background:#1d704b}
+#jobForm .whatsapp-opt-in input[type=checkbox]:checked::after{transform:rotate(45deg) scale(1)}
+#jobForm .whatsapp-opt-in input[type=checkbox]:focus{outline:0;box-shadow:0 0 0 3px #d5eadb}
+#jobForm .whatsapp-opt-in .whatsapp-mark{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#18834e;color:#fff}
+#jobForm .whatsapp-opt-in .whatsapp-mark svg{display:block;width:19px;height:19px;fill:currentColor}
+#jobForm .whatsapp-opt-in span:last-child{font-size:13px;font-weight:700;color:#294a39}
+#jobForm .whatsapp-opt-in.muted span:last-child{color:var(--muted)}
