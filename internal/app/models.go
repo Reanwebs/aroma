@@ -29,6 +29,7 @@ type DryingJob struct {
 	CustomerID                        uuid.UUID
 	Customer                          Customer
 	ProductType, Status, Notes        string
+	BagCount                          int `gorm:"column:bag_count"`
 	ReceivedAt                        time.Time
 	ExpectedCompletionAt, CompletedAt *time.Time
 	CreatedBy                         *uuid.UUID

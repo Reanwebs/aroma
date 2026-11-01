@@ -68,8 +68,8 @@ func (s *Service) UpdateCustomer(ctx context.Context, id uuid.UUID, c *Customer)
 	}
 	return s.Customer(ctx, id)
 }
-func (s *Service) CreateJob(ctx context.Context, customerID, userID uuid.UUID, product string, weight, price decimal.Decimal, notes string) (*DryingJob, error) {
-	if weight.LessThanOrEqual(decimal.Zero) || price.LessThanOrEqual(decimal.Zero) {
+func (s *Service) CreateJob(ctx context.Context, customerID, userID uuid.UUID, product string, weight, price decimal.Decimal, bagCount int, notes string) (*DryingJob, error) {
+	if weight.LessThanOrEqual(decimal.Zero) || price.LessThanOrEqual(decimal.Zero) || bagCount < 1 {
 		return nil, ErrInvalidState
 	}
 	var out DryingJob
@@ -81,7 +81,7 @@ func (s *Service) CreateJob(ctx context.Context, customerID, userID uuid.UUID, p
 		var n int64
 		tx.Model(&DryingJob{}).Where("EXTRACT(YEAR FROM received_at)=?", time.Now().Year()).Count(&n)
 		now := time.Now().UTC()
-		out = DryingJob{Number: fmt.Sprintf("JOB-%d-%06d", now.Year(), n+1), CustomerID: customerID, ProductType: product, Status: "RECEIVED", ReceivedAt: now, Notes: notes, CreatedBy: &userID}
+		out = DryingJob{Number: fmt.Sprintf("JOB-%d-%06d", now.Year(), n+1), CustomerID: customerID, ProductType: product, BagCount: bagCount, Status: "RECEIVED", ReceivedAt: now, Notes: notes, CreatedBy: &userID}
 		if out.ProductType == "" {
 			out.ProductType = "CARDAMOM"
 		}

@@ -65,3 +65,11 @@
 #jobForm .whatsapp-opt-in .whatsapp-mark svg{display:block;width:19px;height:19px;fill:currentColor}
 #jobForm .whatsapp-opt-in span:last-child{font-size:13px;font-weight:700;color:#294a39}
 #jobForm .whatsapp-opt-in.muted span:last-child{color:var(--muted)}
+.customer-picker{position:relative;display:grid;gap:7px}
+.customer-picker>label{margin:0}
+.customer-results{position:relative;z-index:2;max-height:210px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:0 12px 28px #183d311c}
+.customer-result{display:flex;width:100%;justify-content:space-between;gap:12px;padding:11px 13px;border:0;border-bottom:1px solid var(--line);background:#fff;color:var(--ink);text-align:left}
+.customer-result:last-child{border-bottom:0}
+.customer-result:hover,.customer-result:focus{background:#f1f6f1;outline:0}
+.customer-result span{color:var(--muted);font-weight:500}
+.customer-no-results{padding:12px;color:var(--muted)}

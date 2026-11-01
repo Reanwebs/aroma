@@ -291,6 +291,7 @@ func (a *API) CreateJob(c *gin.Context) {
 		Notes           string          `json:"notes"`
 		WeightKG        decimal.Decimal `json:"weight_kg"`
 		PricePerKG      decimal.Decimal `json:"price_per_kg"`
+		BagCount        int             `json:"bag_count"`
 		SendWhatsApp    bool            `json:"send_whatsapp"`
 		WhatsAppMessage string          `json:"whatsapp_message"`
 	}
@@ -299,7 +300,7 @@ func (a *API) CreateJob(c *gin.Context) {
 		return
 	}
 	u, _ := identity(c)
-	v, e := a.svc.CreateJob(c, x.CustomerID, u, x.ProductType, x.WeightKG, x.PricePerKG, x.Notes)
+	v, e := a.svc.CreateJob(c, x.CustomerID, u, x.ProductType, x.WeightKG, x.PricePerKG, x.BagCount, x.Notes)
 	if e != nil {
 		fail(c, e)
 		return

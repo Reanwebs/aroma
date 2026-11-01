@@ -69,5 +69,20 @@ func Migrate(db *gorm.DB) error {
 			return err
 		}
 	}
+	if err := db.Raw("SELECT count(*) FROM schema_migrations WHERE version='000004'").Scan(&applied).Error; err != nil {
+		return err
+	}
+	if applied == 0 {
+		sql, err := migrations.ReadFile("migrations/000004_job_bag_count.up.sql")
+		if err != nil {
+			return err
+		}
+		if err := db.Exec(string(sql)).Error; err != nil {
+			return fmt.Errorf("apply migration 000004: %w", err)
+		}
+		if err := db.Exec("INSERT INTO schema_migrations(version) VALUES ('000004')").Error; err != nil {
+			return err
+		}
+	}
 	return nil
 }
