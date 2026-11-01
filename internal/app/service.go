@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"strings"
 	"time"
 )
@@ -103,6 +104,65 @@ func (s *Service) CreateJob(ctx context.Context, customerID, userID uuid.UUID, p
 	}
 	return &out, nil
 }
+
+func (s *Service) UpdateReceivedJob(ctx context.Context, id uuid.UUID, product string, weight, price decimal.Decimal, bagCount int, notes string) (*DryingJob, error) {
+	if weight.LessThanOrEqual(decimal.Zero) || price.LessThanOrEqual(decimal.Zero) || bagCount < 1 {
+		return nil, ErrInvalidState
+	}
+	err := s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var job DryingJob
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&job, "id = ?", id).Error; err != nil {
+			return ErrNotFound
+		}
+		if job.Status != "RECEIVED" {
+			return ErrInvalidState
+		}
+		if product == "" {
+			product = "CARDAMOM"
+		}
+		job.ProductType, job.BagCount, job.Notes = product, bagCount, notes
+		if err := tx.Save(&job).Error; err != nil {
+			return err
+		}
+		var measurement WeightMeasurement
+		if err := tx.Where("drying_job_id = ? AND measurement_type = ?", id, "RECEIVED").Order("measured_at ASC").First(&measurement).Error; err != nil {
+			return err
+		}
+		if err := tx.Model(&measurement).Update("weight_kg", weight).Error; err != nil {
+			return err
+		}
+		var charge Charge
+		if err := tx.Where("drying_job_id = ? AND charge_type = ?", id, "DRYING").Order("created_at ASC").First(&charge).Error; err != nil {
+			if err != gorm.ErrRecordNotFound {
+				return err
+			}
+			charge = Charge{DryingJobID: id, ChargeType: "DRYING", Description: "Drying service", Unit: "KG"}
+		}
+		charge.Quantity, charge.Rate, charge.Amount = weight, price, weight.Mul(price).Round(2)
+		if charge.ID == uuid.Nil {
+			return tx.Create(&charge).Error
+		}
+		return tx.Save(&charge).Error
+	})
+	if err != nil {
+		return nil, err
+	}
+	return s.Job(ctx, id)
+}
+
+func (s *Service) DeleteReceivedJob(ctx context.Context, id uuid.UUID) error {
+	return s.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		var job DryingJob
+		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&job, "id = ?", id).Error; err != nil {
+			return ErrNotFound
+		}
+		if job.Status != "RECEIVED" {
+			return ErrInvalidState
+		}
+		return tx.Delete(&job).Error
+	})
+}
+
 func (s *Service) Jobs(ctx context.Context, status, number, customerSearch string, page, limit int) ([]DryingJob, int64, error) {
 	q := s.db.WithContext(ctx).Model(&DryingJob{}).Preload("Customer").Preload("Measurements")
 	if status != "" {

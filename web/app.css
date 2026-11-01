@@ -73,3 +73,9 @@
 .customer-result:hover,.customer-result:focus{background:#f1f6f1;outline:0}
 .customer-result span{color:var(--muted);font-weight:500}
 .customer-no-results{padding:12px;color:var(--muted)}
+.job-actions{white-space:nowrap}
+.job-actions .button{padding:7px 9px;font-size:11px;margin-right:5px}
+.quiet-action{border:0;background:transparent;color:#476151;padding:6px;font-size:11px;font-weight:700}
+.quiet-action:hover{background:#edf1ec}
+.delete-action{color:#a33d36}
+.delete-action:hover{background:#fff0ee}

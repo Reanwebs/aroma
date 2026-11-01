@@ -33,6 +33,8 @@ func NewRouter(db *gorm.DB, cfg config.Config) *gin.Engine {
 	secure.POST("/jobs", roles("SUPER_ADMIN", "ADMIN", "OPERATOR"), api.CreateJob)
 	secure.GET("/jobs", api.ListJobs)
 	secure.GET("/jobs/:id", api.GetJob)
+	secure.PATCH("/jobs/:id", roles("SUPER_ADMIN", "ADMIN", "OPERATOR"), api.UpdateJob)
+	secure.DELETE("/jobs/:id", roles("SUPER_ADMIN", "ADMIN", "OPERATOR"), api.DeleteJob)
 	secure.POST("/jobs/:id/status", roles("SUPER_ADMIN", "ADMIN", "OPERATOR"), api.Status)
 	secure.POST("/jobs/:id/weights", roles("SUPER_ADMIN", "ADMIN", "OPERATOR"), api.Weight)
 	secure.POST("/jobs/:id/charges", roles("SUPER_ADMIN", "ADMIN"), api.Charge)

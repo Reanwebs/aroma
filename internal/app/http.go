@@ -340,6 +340,41 @@ func (a *API) GetJob(c *gin.Context) {
 	}
 	ok(c, 200, v, "")
 }
+
+func (a *API) UpdateJob(c *gin.Context) {
+	id, err := uuid.Parse(c.Param("id"))
+	var x struct {
+		ProductType string          `json:"product_type"`
+		WeightKG    decimal.Decimal `json:"weight_kg"`
+		PricePerKG  decimal.Decimal `json:"price_per_kg"`
+		BagCount    int             `json:"bag_count"`
+		Notes       string          `json:"notes"`
+	}
+	if err != nil || c.ShouldBindJSON(&x) != nil {
+		fail(c, errors.New("invalid request"))
+		return
+	}
+	job, err := a.svc.UpdateReceivedJob(c, id, x.ProductType, x.WeightKG, x.PricePerKG, x.BagCount, x.Notes)
+	if err != nil {
+		fail(c, err)
+		return
+	}
+	ok(c, 200, job, "job updated successfully")
+}
+
+func (a *API) DeleteJob(c *gin.Context) {
+	id, err := uuid.Parse(c.Param("id"))
+	if err != nil {
+		fail(c, ErrNotFound)
+		return
+	}
+	if err := a.svc.DeleteReceivedJob(c, id); err != nil {
+		fail(c, err)
+		return
+	}
+	ok(c, 200, gin.H{"deleted": true}, "job deleted successfully")
+}
+
 func (a *API) Status(c *gin.Context) {
 	id, e := uuid.Parse(c.Param("id"))
 	var x struct {
