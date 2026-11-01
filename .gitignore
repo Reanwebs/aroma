@@ -5,4 +5,8 @@ tmp/
 .codex-go-tmp/
 .codex-docker/
 *.pdf
+dist/
 
+
+# Local Netlify folder
+.netlify

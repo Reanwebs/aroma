@@ -1,5 +1,5 @@
 [build]
-  command = "mkdir -p dist/web && cp web/index.html dist/index.html && cp web/app.css web/app.js dist/web/"
+  command = "go run ./cmd/sitebuild"
   publish = "dist"
   functions = "netlify/functions"
 
