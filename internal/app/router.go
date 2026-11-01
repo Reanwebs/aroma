@@ -18,6 +18,8 @@ func NewRouter(db *gorm.DB, cfg config.Config) *gin.Engine {
 	r.GET("/healthz", func(c *gin.Context) { c.JSON(200, gin.H{"status": "ok"}) })
 	api := NewAPI(db, cfg)
 	v := r.Group("/api/v1")
+	v.GET("/whatsapp/webhook", api.WhatsAppWebhook)
+	v.POST("/whatsapp/webhook", api.WhatsAppWebhook)
 	v.POST("/auth/login", api.Login)
 	v.POST("/auth/refresh", api.Refresh)
 	secure := v.Group("", api.Auth)

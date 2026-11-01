@@ -29,6 +29,26 @@ type API struct {
 }
 
 func NewAPI(db *gorm.DB, c config.Config) *API { return &API{NewService(db), db, c, validator.New()} }
+
+// WhatsAppWebhook verifies Meta's callback URL and acknowledges notifications
+// without reading or storing their payloads.
+func (a *API) WhatsAppWebhook(c *gin.Context) {
+	switch c.Request.Method {
+	case http.MethodGet:
+		if c.Query("hub.mode") == "subscribe" && a.cfg.WhatsAppWebhookVerifyToken != "" &&
+			c.Query("hub.verify_token") == a.cfg.WhatsAppWebhookVerifyToken {
+			c.String(http.StatusOK, c.Query("hub.challenge"))
+			return
+		}
+		c.Status(http.StatusForbidden)
+	case http.MethodPost:
+		c.Status(http.StatusOK)
+	default:
+		c.Header("Allow", "GET, POST")
+		c.Status(http.StatusMethodNotAllowed)
+	}
+}
+
 func ok(c *gin.Context, status int, data any, msg string) {
 	c.JSON(status, gin.H{"success": true, "data": data, "message": msg})
 }

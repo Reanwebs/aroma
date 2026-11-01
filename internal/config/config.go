@@ -12,6 +12,7 @@ type Config struct {
 	AppEnv, Port, DatabaseDSN, JWTSecret, BusinessName, BusinessAddress string
 	WhatsAppEnabled                                                     bool
 	WhatsAppAPIURL, WhatsAppAccessToken, WhatsAppPhoneNumberID          string
+	WhatsAppWebhookVerifyToken                                          string
 	InitialAdminName, InitialAdminEmail, InitialAdminPassword           string
 	AccessTTL, RefreshTTL                                               time.Duration
 }
@@ -41,21 +42,22 @@ func Load() (Config, error) {
 	}
 
 	return Config{
-		AppEnv:                env("APP_ENV", "development"),
-		Port:                  port,
-		DatabaseDSN:           dsn,
-		JWTSecret:             secret,
-		BusinessName:          env("BUSINESS_NAME", "Cardamom Drying Centre"),
-		BusinessAddress:       env("BUSINESS_ADDRESS", "Munnar, Kerala"),
-		InitialAdminName:      env("INITIAL_ADMIN_NAME", "Aroma Admin"),
-		InitialAdminEmail:     env("INITIAL_ADMIN_EMAIL", ""),
-		InitialAdminPassword:  env("INITIAL_ADMIN_PASSWORD", ""),
-		WhatsAppEnabled:       env("WHATSAPP_ENABLED", "false") == "true",
-		WhatsAppAPIURL:        env("WHATSAPP_API_URL", ""),
-		WhatsAppAccessToken:   env("WHATSAPP_ACCESS_TOKEN", ""),
-		WhatsAppPhoneNumberID: env("WHATSAPP_PHONE_NUMBER_ID", ""),
-		AccessTTL:             accessTTL,
-		RefreshTTL:            refreshTTL,
+		AppEnv:                     env("APP_ENV", "development"),
+		Port:                       port,
+		DatabaseDSN:                dsn,
+		JWTSecret:                  secret,
+		BusinessName:               env("BUSINESS_NAME", "Cardamom Drying Centre"),
+		BusinessAddress:            env("BUSINESS_ADDRESS", "Munnar, Kerala"),
+		InitialAdminName:           env("INITIAL_ADMIN_NAME", "Aroma Admin"),
+		InitialAdminEmail:          env("INITIAL_ADMIN_EMAIL", ""),
+		InitialAdminPassword:       env("INITIAL_ADMIN_PASSWORD", ""),
+		WhatsAppEnabled:            env("WHATSAPP_ENABLED", "false") == "true",
+		WhatsAppAPIURL:             env("WHATSAPP_API_URL", ""),
+		WhatsAppAccessToken:        env("WHATSAPP_ACCESS_TOKEN", ""),
+		WhatsAppPhoneNumberID:      env("WHATSAPP_PHONE_NUMBER_ID", ""),
+		WhatsAppWebhookVerifyToken: env("WHATSAPP_WEBHOOK_VERIFY_TOKEN", ""),
+		AccessTTL:                  accessTTL,
+		RefreshTTL:                 refreshTTL,
 	}, nil
 }
 
