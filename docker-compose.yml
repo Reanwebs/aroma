@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cardamom
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/000001_initial.up.sql:/docker-entrypoint-initdb.d/000001_initial.up.sql:ro
+  app:
+    build: .
+    depends_on: [postgres]
+    environment:
+      APP_PORT: 8080
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: cardamom
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_SSLMODE: disable
+      JWT_SECRET: development-secret-change-me
+    ports: ["8080:8080"]
+volumes:
+  postgres_data:

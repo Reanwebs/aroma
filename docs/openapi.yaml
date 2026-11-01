@@ -1,0 +1,10 @@
+openapi: 3.0.3
+info: {title: Cardamom Dryer API, version: 1.0.0}
+servers: [{url: /api/v1}]
+paths:
+  /auth/login:
+    post: {summary: Login, requestBody: {required: true}, responses: {'200': {description: JWT token pair}}}
+  /customers: {get: {summary: Paginated customers, responses: {'200': {description: OK}}}, post: {summary: Create customer, responses: {'201': {description: Created}}}}
+  /jobs: {get: {summary: Search jobs, responses: {'200': {description: OK}}}, post: {summary: Create job, responses: {'201': {description: Created}}}}
+  /jobs/{id}/invoice: {post: {summary: Issue idempotent invoice, responses: {'201': {description: Issued}}}}
+  /invoices/{id}/payments: {post: {summary: Record payment, responses: {'201': {description: Recorded}}}}

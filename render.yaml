@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: aroma-cardamom-demo
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: BUSINESS_NAME
+        value: Aroma Cardamom
+      - key: BUSINESS_ADDRESS
+        value: Munnar, Kerala
+      - key: DATABASE_URL
+        fromDatabase:
+          name: aroma-postgres-demo
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: INITIAL_ADMIN_NAME
+        value: Aroma Admin
+      - key: INITIAL_ADMIN_EMAIL
+        sync: false
+      - key: INITIAL_ADMIN_PASSWORD
+        sync: false
+
+databases:
+  # Demo only: free Postgres expires after 30 days and has no backups.
+  - name: aroma-postgres-demo
+    databaseName: aroma
+    user: aroma
+    plan: free
+    region: singapore
+    postgresMajorVersion: 16

@@ -1,0 +1,9 @@
+.env
+.env.*
+.git
+.codex-go-cache
+.codex-go-tmp
+.codex-docker
+bin/
+tmp/
+*.pdf

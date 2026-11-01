@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS audit_logs,notification_templates,notifications,payments,invoice_items,invoices,charges,pricing_rules,drying_batch_jobs,drying_batches,job_status_history,weight_measurements,drying_jobs,customers,users CASCADE;
+DROP TYPE IF EXISTS notification_status,notification_channel,payment_method,invoice_status,batch_status,measurement_type,job_status,user_role;
