@@ -100,7 +100,12 @@ func handler(event events.APIGatewayProxyRequest) (events.APIGatewayProxyRespons
 	for key, values := range response.Header() {
 		result.Headers[key] = strings.Join(values, ", ")
 	}
-	result.Body, result.IsBase64Encoded = response.Body.String(), false
+	if strings.HasPrefix(strings.ToLower(response.Header().Get("Content-Type")), "image/") {
+		result.Body = base64.StdEncoding.EncodeToString(response.Body.Bytes())
+		result.IsBase64Encoded = true
+	} else {
+		result.Body = response.Body.String()
+	}
 	return result, nil
 }
 

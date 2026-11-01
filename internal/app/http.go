@@ -330,11 +330,7 @@ func (a *API) Status(c *gin.Context) {
 		if customerErr != nil {
 			result["whatsapp_error"] = "Could not load the customer's WhatsApp details."
 		} else {
-			phone := customer.WhatsAppNumber
-			if phone == "" {
-				phone = customer.Phone
-			}
-			if sendErr := a.sendWhatsApp(c.Request.Context(), phone, x.WhatsAppMessage); sendErr != nil {
+			if sendErr := a.sendWhatsApp(c.Request.Context(), customer.Phone, x.WhatsAppMessage); sendErr != nil {
 				result["whatsapp_error"] = sendErr.Error()
 			} else {
 				result["whatsapp_sent"] = true

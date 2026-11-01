@@ -6,3 +6,52 @@
 #statusForm label.whatsapp-opt-in{display:flex!important;align-items:center;gap:12px;width:100%;min-height:58px;margin:16px 0;padding:12px 15px;border:1px solid #d7e3d9;border-radius:12px;background:#f7faf7;cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s}#statusForm label.whatsapp-opt-in:hover{border-color:#91b59b;background:#f0f7f1}#statusForm label.whatsapp-opt-in:focus-within{border-color:#4e8b65;box-shadow:0 0 0 3px #dcefe4}#statusForm .whatsapp-opt-in input[type=checkbox]{appearance:none;-webkit-appearance:none;display:grid;place-content:center;flex:0 0 22px;width:22px!important;height:22px!important;min-width:22px;margin:0;padding:0;border:1.5px solid #9aaba0;border-radius:6px;background:#fff;box-shadow:none;cursor:pointer}#statusForm .whatsapp-opt-in input[type=checkbox]::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg) scale(0);transition:transform .12s}#statusForm .whatsapp-opt-in input[type=checkbox]:checked{border-color:#1d704b;background:#1d704b}#statusForm .whatsapp-opt-in input[type=checkbox]:checked::after{transform:rotate(45deg) scale(1)}#statusForm .whatsapp-opt-in input[type=checkbox]:focus{outline:0;box-shadow:0 0 0 3px #d5eadb}#statusForm .whatsapp-opt-in .whatsapp-mark{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:50%;background:#18834e;color:#fff}#statusForm .whatsapp-opt-in .whatsapp-mark svg{display:block;width:19px;height:19px;fill:currentColor}#statusForm .whatsapp-opt-in span:last-child{font-size:13px;font-weight:700;color:#294a39}
 
 .measurement-entry{min-width:0;margin:8px 0 14px;padding:12px 14px 14px;border:1px solid var(--line);border-radius:12px;background:#f8faf7}.measurement-entry legend{padding:0 6px;font-size:12px;font-weight:800;color:#294a39}.measurement-entry p{margin:4px 0 10px}.measurement-entry label{margin:0}
+
+.profile-image-field>div{flex:1;min-width:0}.profile-image-field input[type=file]{width:100%;max-width:100%;padding:8px;font-size:12px}
+#jobsView>.heading{justify-content:flex-end}
+@media(max-width:650px){
+  .modal-root{place-items:start center;overflow-y:auto;padding:10px 10px calc(112px + env(safe-area-inset-bottom))}
+  .modal{width:100%;max-height:calc(100dvh - 132px);padding:20px 18px;border-radius:14px}
+  .modal .footer{position:sticky;bottom:-20px;background:#fff;padding:12px 0 20px;margin:12px 0 -20px;z-index:1}
+  .profile-image-field{align-items:flex-start;gap:12px}
+  .profile-image-field>div{gap:8px}
+  #customersView .table{overflow-x:hidden}
+  #customersView table{min-width:0;width:100%;table-layout:fixed}
+  #customersView th,#customersView td{padding:12px 7px;font-size:11px}
+  #customersView th:nth-child(1),#customersView td:nth-child(1){width:38%}
+  #customersView th:nth-child(2),#customersView td:nth-child(2){width:23%}
+  #customersView th:nth-child(3),#customersView td:nth-child(3){width:23%}
+  #customersView th:nth-child(4),#customersView td:nth-child(4){display:none}
+  #customersView th:nth-child(5),#customersView td:nth-child(5){width:16%}
+  #customersView td:nth-child(2),#customersView td:nth-child(3){overflow-wrap:anywhere}
+  #customersView .customer-cell{gap:6px;min-width:0}
+  #customersView .customer-avatar{width:34px;height:34px}
+  #customersView .customer-cell .sub{display:none}
+  #customersView td .button{font-size:0;padding:7px 5px;white-space:nowrap}
+  #customersView td .button::after{content:'Edit';font-size:10px}
+}
+@media(max-width:650px){
+  #jobsView .table,#invoicesView .table{overflow:hidden}
+  #jobsView table,#invoicesView table{display:block;width:100%;min-width:0}
+  #jobsView thead,#invoicesView thead{display:none}
+  #jobsView tbody,#invoicesView tbody{display:block;width:100%}
+  #jobsView tbody tr,#invoicesView tbody tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%;padding:8px 10px;border-bottom:1px solid var(--line)}
+  #jobsView tbody tr:last-child,#invoicesView tbody tr:last-child{border-bottom:0}
+  #jobsView td,#invoicesView td{display:flex;flex-direction:column;justify-content:center;min-width:0;padding:8px 6px;border:0;font-size:12px;overflow-wrap:anywhere}
+  #jobsView td::before,#invoicesView td::before{display:block;margin-bottom:4px;color:#7a8980;font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+  #jobsView td:nth-child(1)::before{content:'Job'}
+  #jobsView td:nth-child(2)::before{content:'Customer'}
+  #jobsView td:nth-child(3)::before{content:'Received'}
+  #jobsView td:nth-child(4)::before{content:'Status'}
+  #jobsView td:nth-child(5){grid-column:1/-1;align-items:flex-start;padding-top:4px}
+  #jobsView td:nth-child(5)::before{content:'Actions'}
+  #jobsView td .job-open{font-size:12px;padding:8px 12px}
+  #invoicesView td:nth-child(1)::before{content:'Invoice'}
+  #invoicesView td:nth-child(2)::before{content:'Customer'}
+  #invoicesView td:nth-child(3)::before{content:'Issued'}
+  #invoicesView td:nth-child(4)::before{content:'Total / payments'}
+  #invoicesView td:nth-child(5)::before{content:'Status'}
+  #invoicesView td:nth-child(6){grid-column:1/-1;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;flex-wrap:wrap;gap:8px;padding-top:10px;border-top:1px solid #edf1ec}
+  #invoicesView td:nth-child(6)::before{content:'Actions';width:100%;margin:0}
+  #invoicesView td:nth-child(6) .action{display:inline-flex;align-items:center;justify-content:center;min-height:36px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#f7f9f6;text-decoration:none;white-space:nowrap;font-size:11px}
+}
